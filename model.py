@@ -26,6 +26,7 @@ class RTSNet(nn.Module):
         super().__init__()
 
         self.backbone = eval(args.backbone)
+        self.backbone.conv1 = nn.Conv2d(10, self.backbone.inplanes, kernel_size=7, stride=2, padding=3, bias=False)
         self.backbone.fc = nn.Linear(self.backbone.fc.in_features, args.nhids)
 
         layers = _stack_linear_layers(args.nhids, args.nlayers, args.dropout)

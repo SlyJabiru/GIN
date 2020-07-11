@@ -49,8 +49,10 @@ if __name__ == "__main__":
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     print(f"{device} selected for training")
 
-    train_data = eval(f"{args.model}Dataset")(join(args.data_root, 'train.csv'))
-    valid_data = eval(f"{args.model}Dataset")(join(args.data_root, 'test.csv'))
+    radar_root = join(args.data_root, 'radar')
+
+    train_data = eval(f"{args.model}Dataset")(join(args.data_root, 'train.csv'), radar_root)
+    valid_data = eval(f"{args.model}Dataset")(join(args.data_root, 'test.csv'), radar_root)
 
     model = eval(f"{args.model}Net")(args)
     if args.device_ids and len(args.device_ids) > 1:
