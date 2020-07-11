@@ -182,3 +182,5 @@ pip-selfcheck.json
 
 .idea/
 data/
+checkpoints/
+scripts/

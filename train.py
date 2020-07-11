@@ -51,6 +51,7 @@ if __name__ == "__main__":
 
     radar_root = join(args.data_root, 'radar')
 
+    print("Data Loading...\n")
     train_data = eval(f"{args.model}Dataset")(join(args.data_root, 'train.csv'), radar_root)
     valid_data = eval(f"{args.model}Dataset")(join(args.data_root, 'test.csv'), radar_root)
 

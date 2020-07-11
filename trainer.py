@@ -32,7 +32,7 @@ class Trainer:
             batch_size=self.args.batch_size
         )
 
-        for epoch in range(self.args.epochs):
+        for epoch in range(1, self.args.epochs + 1):
             print(f"<Epoch {epoch:2d}>")
 
             self.model.train()

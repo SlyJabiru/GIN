@@ -25,17 +25,11 @@ class RTSNet(nn.Module):
     def __init__(self, args):
         super().__init__()
 
-        self.backbone = eval(args.backbone)
-        self.backbone.conv1 = nn.Conv2d(10, self.backbone.inplanes, kernel_size=7, stride=2, padding=3, bias=False)
-        self.backbone.fc = nn.Linear(self.backbone.fc.in_features, args.nhids)
-
-        layers = _stack_linear_layers(args.nhids, args.nlayers, args.dropout)
-        self.fc = nn.Sequential(*layers)
-        self.decoder = nn.Linear(args.nhids, 1)
+        self.backbone = eval(args.backbone)()
+        self.backbone.conv1 = nn.Conv2d(22, 64, kernel_size=7, stride=2, padding=3, bias=False)
+        self.backbone.fc = nn.Linear(self.backbone.fc.in_features, 1)
 
     def forward(self, x):
-        x = self.backbone(x)
-        x = self.fc(x)
-        x = f.leaky_relu(self.decoder(x))
+        x = f.leaky_relu(self.backbone(x))
 
         return x

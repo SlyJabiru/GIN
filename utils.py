@@ -2,6 +2,7 @@ import numpy as np
 from os.path import join
 from PIL import Image
 import torch
+from datetime import datetime, timedelta
 
 
 def save_checkpoint(tag, model, optimizer, multi_gpu, save_dir):
@@ -26,6 +27,19 @@ def load_checkpoint(file, model, optimizer, multi_gpu):
     optimizer.load_state_dict(state_dict['optimizer'])
 
 
-def read_image(file):
-    img = Image.open(file).convert("RGB")
-    return np.array(img)
+def read_image(root_dir, key):
+    w, h = 768, 768
+    ret = np.empty((w, h, 0))
+    date_format = "%Y%m%d%H%M"
+    base_date = datetime.strptime(str(key), date_format)
+
+    for i in range(3):
+        img_name = base_date - timedelta(hours=0, minutes=10 * i)
+        img_name = img_name.strftime(date_format)
+
+        img = Image.open(f"{root_dir}/{img_name}.png").convert("RGB")
+        img = np.array(img)
+
+        ret = np.concatenate((ret, img), axis=2)
+
+    return ret
