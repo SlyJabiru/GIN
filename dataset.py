@@ -32,9 +32,9 @@ class RTSDataset(Dataset):
             })
 
         self.x = np.empty((0, w, h, 22))
-        self.y = raw_data["energy"]
+        self.y = np.empty((0, 1))
 
-        for idx in range(self.y.shape[0]):
+        for idx in range(raw_data.shape[0]):
             try:
                 row = raw_data[idx]
                 cot_img = read_image(cot_root, row[0]) / 255.0
@@ -55,9 +55,11 @@ class RTSDataset(Dataset):
                         minutes
                     ), axis=2)
                 self.x = np.concatenate((self.x, x_data.reshape((1, w, h, 22))), axis=0)
+                self.y = np.append(self.y, row[1])
             except FileNotFoundError as err:
                 print(err)
         self.x = np.transpose(self.x.astype('float32'), (0, 3, 1, 2))
+        self.y = self.y.astype('float32')
         self.cnt = self.x.shape[0]
 
     def __getitem__(self, idx):
