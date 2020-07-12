@@ -1,4 +1,4 @@
-import torch
+import numpy as np
 
 
 def rta_metric(y_pred, y):
@@ -6,5 +6,6 @@ def rta_metric(y_pred, y):
 
 
 def rts_metric(y_pred, y):
-    ret = torch.sum(torch.abs(y_pred - y) * y) / torch.sum(y)
-    return ret.item()
+    y_pred, y = np.array(y_pred), np.array(y)
+    ret = np.sum(np.abs(y_pred - y) * y) / np.sum(y)
+    return ret

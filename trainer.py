@@ -63,8 +63,8 @@ class Trainer:
 
     def _train_epoch(self, loader, is_train):
         total_loss = 0.0
-        preds = torch.empty(0)
-        reals = torch.empty(0)
+        preds = []
+        reals = []
 
         for batch, (x, y) in enumerate(loader):
             if is_train:
@@ -73,12 +73,13 @@ class Trainer:
             y_pred = self.model(x)
 
             y, y_pred = y.view(-1), y_pred.view(-1)
-            preds = torch.cat((preds, y_pred))
-            reals = torch.cat((reals, y))
+            preds = preds + y_pred.tolist()
+            reals = reals + y.tolist()
 
             loss = self.criterion(y_pred, y)
             if is_train:
                 loss.backward()
+            del x, y
 
             total_loss = batch / (batch + 1) * total_loss + loss.item() / (batch + 1)
 
