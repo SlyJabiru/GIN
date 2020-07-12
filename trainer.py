@@ -61,6 +61,8 @@ class Trainer:
                 self.args.save_dir
             )
 
+            print()
+
     def _train_epoch(self, loader, is_train):
         total_loss = 0.0
         preds = []
@@ -79,6 +81,7 @@ class Trainer:
             loss = self.criterion(y_pred, y)
             if is_train:
                 loss.backward()
+                self.optimizer.step()
             del x, y
 
             total_loss = batch / (batch + 1) * total_loss + loss.item() / (batch + 1)
