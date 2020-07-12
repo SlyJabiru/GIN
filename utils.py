@@ -38,8 +38,8 @@ def read_image(root_dir, key):
         img_name = img_name.strftime(date_format)
 
         img = Image.open(f"{root_dir}/{img_name}.png").convert("RGB")
-        img = np.array(img)
+        img = np.array(img) / 255.0
 
         ret = np.concatenate((ret, img), axis=2)
 
-    return ret
+    return ret.astype("float32")
